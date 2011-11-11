@@ -1,7 +1,0 @@
-{% load currency %}
-
-There should be 211 entries
-
-{% for region in regions %}
-    <p>{{ forloop.counter }}<b>{{ region }}: </b>{{ 1234567|currency:region }}</p>
-{% endfor %}

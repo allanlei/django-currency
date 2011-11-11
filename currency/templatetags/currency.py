@@ -1,11 +1,30 @@
 from django import template
 from django.conf import settings
-from .. import utils
-from .. import models
+
+from currencies import currencies, DEFAULT_CURRENCY
 
 register = template.Library()
+symbol = 'symbol'
+positiveFormat = 'positive_format'
+negativeFormat = 'negative_format'
+decimalSymbol = 'decimal_symbol'
+decimalPlaces = 'decimal_places'
+digitGroupSymbol = 'group_symbol'
+groupDigits = 'group'
+
+
+
+def format_currency(amount, currency):
+    if amount >= 0:
+        format = currency.get('positive_format', '%(symbol)s%(amount)s')
+    else:
+        format = currency.get('negative_format', '(%(symbol)s%(amount)s)')
+        
+    return format % {
+        'symbol': currency.get('symbol', '$'),
+        'amount': amount,
+    }
 
 @register.filter
-def currency(value, region=getattr(settings, 'CURRENCY_DEFAULT_REGION', settings.LANGUAGE_CODE)):
-    curr = models.Currency.objects.get_currency(region)
-    return utils.toCurrency(value, **curr.toDict())
+def currency(amount, curr=DEFAULT_CURRENCY):
+    return format_currency(amount, currencies[curr])
