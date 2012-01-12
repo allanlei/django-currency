@@ -11,5 +11,15 @@
 
 # Usage #
 
-* Template Filters {% load currency %}  {{ 1000.010|currency:'USD' }}
-* from currencies.utils import format
+### Template Filters ###
+
+```
+{% load currency %}
+{{ 1000.010|currency:'USD' }}
+```
+
+### Manual ###
+```
+from currencies.utils import format
+format(100.01, symbol='$')
+```
